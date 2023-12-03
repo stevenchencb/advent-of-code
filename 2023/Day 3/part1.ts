@@ -72,10 +72,6 @@ function getPotentialSymbolCoordinates(minX: number, maxX: number, line: number)
 	return potentialCoordinates;
 }
 
-function intersects(a: [number, number][], b: [number, number][]) {
-	return a.filter((x) => b.find((y) => isEqualTuple(x, y))).length > 0;
-}
-
 function isEqualTuple(a: [number, number], b: [number, number]) {
 	return a[0] === b[0] && a[1] === b[1];
 }

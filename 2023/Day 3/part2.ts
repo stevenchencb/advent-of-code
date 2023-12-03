@@ -47,7 +47,7 @@ function calculateNumbersAndGearCoords(lines: string[]): NumbersAndGearCoords[] 
 		const currentLine = lines[i];
 
 		const numbers: number[] = [];
-		const potentialSymbolCoordinates: [number, number][][] = [];
+		const potentialGearCoordinates: [number, number][][] = [];
 
 		const matches = [...currentLine.matchAll(/\d+/g)];
 		matches.forEach((m) => {
@@ -55,15 +55,15 @@ function calculateNumbersAndGearCoords(lines: string[]): NumbersAndGearCoords[] 
 			const minX = m.index ?? -1;
 			const maxX = minX + matchedNumberString.length - 1;
 			numbers.push(Number.parseInt(matchedNumberString));
-			potentialSymbolCoordinates.push(getPotentialSymbolCoordinates(minX, maxX, i));
+			potentialGearCoordinates.push(getPotentialGearCoordinates(minX, maxX, i));
 		});
-		result.push({ numbers, potentialGearCoordinates: potentialSymbolCoordinates });
+		result.push({ numbers, potentialGearCoordinates: potentialGearCoordinates });
 	}
 
 	return result;
 }
 
-function getPotentialSymbolCoordinates(minX: number, maxX: number, line: number): [number, number][] {
+function getPotentialGearCoordinates(minX: number, maxX: number, line: number): [number, number][] {
 	const potentialCoordinates: [number, number][] = [];
 
 	// potential coordinates above and below number
@@ -77,10 +77,6 @@ function getPotentialSymbolCoordinates(minX: number, maxX: number, line: number)
 	potentialCoordinates.push([maxX + 1, line]);
 
 	return potentialCoordinates;
-}
-
-function intersects(a: [number, number][], b: [number, number][]) {
-	return a.filter((x) => b.find((y) => isEqualTuple(x, y))).length > 0;
 }
 
 function isEqualTuple(a: [number, number], b: [number, number]) {
