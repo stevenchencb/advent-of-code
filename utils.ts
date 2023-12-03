@@ -6,8 +6,8 @@ export async function getFileLines(filename: string): Promise<string[]> {
 	return (await Bun.file(filename).text()).split('\n');
 }
 
-export function extractWithRegex(s: string, regexAsString: string, groupToExtract: string | number, regexFlags = 'gi') {
-	const regex = new RegExp(regexAsString, regexFlags);
+export function extractWithRegex(s: string, regexp: string | RegExp, groupToExtract: string | number, regexFlags = 'gi') {
+	const regex = new RegExp(regexp, regexFlags);
 	const matches = regex.exec(s);
 	return (typeof groupToExtract === 'string' ? (matches?.groups ?? {})[groupToExtract] : matches?.at(groupToExtract)) ?? '';
 }

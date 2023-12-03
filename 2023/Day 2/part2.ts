@@ -11,28 +11,32 @@ for (const line of lines) {
 	const redCubes: number[] = [];
 	const greenCubes: number[] = [];
 
-	blueCubes.push(...getCubes(sets, 'blue'));
-	redCubes.push(...getCubes(sets, 'red'));
-	greenCubes.push(...getCubes(sets, 'green'));
+	addCubes(sets, blueCubes, redCubes, greenCubes);
 
 	powerSum += getPower(blueCubes, redCubes, greenCubes);
 }
 
 console.log(powerSum);
 
-function getCubes(sets: string[], color: 'blue' | 'green' | 'red'): number[] {
-	const regexAsString = `(\\d+) ${color}`;
-	const cubes: number[] = [];
+function addCubes(sets: string[], blueCubes: number[], redCubes: number[], greenCubes: number[]) {
+	const blueCubesRegexString = '((?<blueCubes>\\d+) blue)';
+	const redCubesRegexString = '((?<redCubes>\\d+) red)';
+	const greenCubesRegexString = '((?<greenCubes>\\d+) green)';
 
 	for (const set of sets) {
-		const extractedNum = extractWithRegex(set, regexAsString, 1);
-		const cubesInSet = Number.parseInt(extractedNum);
-		if (!Number.isNaN(cubesInSet)) {
-			cubes.push(cubesInSet);
-		}
-	}
+		const extractedBlueCubes = extractWithRegex(set, blueCubesRegexString, 'blueCubes');
+		const extractedRedCubes = extractWithRegex(set, redCubesRegexString, 'redCubes');
+		const extractedGreenCubes = extractWithRegex(set, greenCubesRegexString, 'greenCubes');
 
-	return cubes;
+		const blueCubesInSet = Number.parseInt(extractedBlueCubes);
+		const redCubesInSet = Number.parseInt(extractedRedCubes);
+		const greenCubesInSet = Number.parseInt(extractedGreenCubes);
+
+		// only push if a cube color is available in current set
+		!Number.isNaN(blueCubesInSet) && blueCubes.push(blueCubesInSet);
+		!Number.isNaN(redCubesInSet) && redCubes.push(redCubesInSet);
+		!Number.isNaN(greenCubesInSet) && greenCubes.push(greenCubesInSet);
+	}
 }
 
 function getPower(blueCubes: number[], redCubes: number[], greenCubes: number[]) {
