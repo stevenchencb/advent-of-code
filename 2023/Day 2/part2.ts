@@ -1,11 +1,10 @@
-import { getFileLines } from '../../utils';
+import { extractWithRegex, getFileLines } from '../../utils';
 
 const lines = await getFileLines('./input.txt');
 
 let powerSum = 0;
 
 for (const line of lines) {
-	const id = Number.parseInt(line.replace(/game (\d+).*/gi, '$1'));
 	const sets = line.split(';');
 
 	const blueCubes: number[] = [];
@@ -22,11 +21,12 @@ for (const line of lines) {
 console.log(powerSum);
 
 function getCubes(sets: string[], color: 'blue' | 'green' | 'red'): number[] {
-	const regex = new RegExp(`(?<cubes>\\d+) ${color}`);
+	const regexAsString = `(\\d+) ${color}`;
 	const cubes: number[] = [];
 
 	for (const set of sets) {
-		const cubesInSet = Number.parseInt(regex.exec(set)?.groups?.cubes ?? '');
+		const extractedNum = extractWithRegex(set, regexAsString, 1);
+		const cubesInSet = Number.parseInt(extractedNum);
 		if (!Number.isNaN(cubesInSet)) {
 			cubes.push(cubesInSet);
 		}
