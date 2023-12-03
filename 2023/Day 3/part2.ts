@@ -15,12 +15,15 @@ for (let i = 0; i < lines.length; i++) {
 	// get coordinates of gears in line
 	const gearCoordinates: [number, number][] = [...currentLine.matchAll(/\*/g)].map((m) => [m.index ?? -1, i]);
 
+	const prevLine = i - 1 < 0 ? 0 : i - 1;
+	const nextLine = i + 1 > numberAndPotentialGearCoords.length - 1 ? numberAndPotentialGearCoords.length - 1 : i + 1;
+
 	gearCoordinates.forEach((coordinate) => {
 		let adjacentTo: number[] = [];
 
-		// check if gear coordinates occur in lists of potential gear coordinates
+		// check if gear coordinate occurs in lists of potential gear coordinates
 		// enough to only check the potential symbol coordinates of current line and the lines above and below
-		for (let j = i - 1; j <= i + 1; j++) {
+		for (let j = prevLine; j <= nextLine; j++) {
 			const numbersOfLine = numberAndPotentialGearCoords[j].numbers;
 			const potentialGearCoordsOfLine = numberAndPotentialGearCoords[j].potentialGearCoordinates;
 			numbersOfLine.forEach((n, k) => {

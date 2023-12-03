@@ -5,43 +5,36 @@ type NumbersAndSymbolCoords = { numbers: number[]; potentialSymbolCoordinates: [
 const lines = await getFileLines('./input.txt');
 
 // numbers and their potential symbol coordinates (in 2D matrix) per line
-const numberAndPotentialSymbolCoords: NumbersAndSymbolCoords[] = calculateNumbersAndPotentialSymbolCoords(lines);
+const numberAndPotentialSymbolCoords: NumbersAndSymbolCoords[] = [];
+
+// coordinates of all symbols
+const allSymbolCoordinates: [number, number][] = [];
 
 let partNumbersSum = 0;
 
-for (let i = 0; i < lines.length; i++) {
-	const currentLine = lines[i];
+// get coordinates of all symbols, as well as all numbers and the coordinates for which a number is
+// considered adjacent if a symbol is present in at least one of them ("potential symbol coordinates")
+calculateNumbersAndSymbolCoords(lines);
 
-	// get coordinates of symbols in line
-	const symbolCoordinates: [number, number][] = [...currentLine.matchAll(/[^0-9\.]/g)].map((m) => [m.index ?? -1, i]);
-
-	symbolCoordinates.forEach((coordinate) => {
-		// check if symbol coordinates occur in lists of potential symbol coordinates
-		// enough to only check the potential symbol coordinates of current line and the lines above and below
-		for (let j = i - 1; j <= i + 1; j++) {
-			const numbersOfLine = numberAndPotentialSymbolCoords[j].numbers;
-			const potentialSymbolCoordsOfLine = numberAndPotentialSymbolCoords[j].potentialSymbolCoordinates;
-			numbersOfLine.forEach((n, k) => {
-				const potentialCoordsOfNumber = potentialSymbolCoordsOfLine[k];
-				if (potentialCoordsOfNumber.find((pc) => isEqualTuple(pc, coordinate))) {
-					partNumbersSum += n;
-				}
-			});
+for (const numbersAndPotentialCoords of numberAndPotentialSymbolCoords) {
+	numbersAndPotentialCoords.numbers.forEach((n, i) => {
+		const potentialSymbolCoordsOfNumber = numbersAndPotentialCoords.potentialSymbolCoordinates[i];
+		if (intersects(allSymbolCoordinates, potentialSymbolCoordsOfNumber)) {
+			partNumbersSum += n;
 		}
 	});
 }
 
 console.log(partNumbersSum);
 
-function calculateNumbersAndPotentialSymbolCoords(lines: string[]): NumbersAndSymbolCoords[] {
-	const result: NumbersAndSymbolCoords[] = [];
-
+function calculateNumbersAndSymbolCoords(lines: string[]) {
 	for (let i = 0; i < lines.length; i++) {
 		const currentLine = lines[i];
 
 		const numbers: number[] = [];
 		const potentialSymbolCoordinates: [number, number][][] = [];
 
+		// get numbers and their potential symbol coordinates in current line
 		const matches = [...currentLine.matchAll(/\d+/g)];
 		matches.forEach((m) => {
 			const matchedNumberString = m[0];
@@ -50,10 +43,11 @@ function calculateNumbersAndPotentialSymbolCoords(lines: string[]): NumbersAndSy
 			numbers.push(Number.parseInt(matchedNumberString));
 			potentialSymbolCoordinates.push(getPotentialSymbolCoordinates(minX, maxX, i));
 		});
-		result.push({ numbers, potentialSymbolCoordinates });
-	}
+		numberAndPotentialSymbolCoords.push({ numbers, potentialSymbolCoordinates });
 
-	return result;
+		// get coordinates of symbols in current line
+		allSymbolCoordinates.push(...([...currentLine.matchAll(/[^0-9\.]/g)].map((m) => [m.index ?? -1, i]) as [number, number][]));
+	}
 }
 
 function getPotentialSymbolCoordinates(minX: number, maxX: number, line: number): [number, number][] {
@@ -70,6 +64,10 @@ function getPotentialSymbolCoordinates(minX: number, maxX: number, line: number)
 	potentialCoordinates.push([maxX + 1, line]);
 
 	return potentialCoordinates;
+}
+
+function intersects(a: [number, number][], b: [number, number][]) {
+	return a.filter((x) => b.find((y) => isEqualTuple(x, y))).length > 0;
 }
 
 function isEqualTuple(a: [number, number], b: [number, number]) {
