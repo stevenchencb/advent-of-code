@@ -11,3 +11,7 @@ export function extractWithRegex(s: string, regexp: string | RegExp, groupToExtr
 	const matches = regex.exec(s);
 	return (typeof groupToExtract === 'string' ? (matches?.groups ?? {})[groupToExtract] : matches?.at(groupToExtract)) ?? '';
 }
+
+export function intersection<T>(a: T[], b: T[]) {
+	return a.filter((x) => !!b.find((y) => x === y));
+}
