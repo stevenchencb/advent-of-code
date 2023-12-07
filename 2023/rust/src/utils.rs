@@ -1,3 +1,4 @@
+use regex::Regex;
 use std::fs::read_to_string;
 
 pub fn get_file_lines(file: &str) -> Vec<String> {
@@ -8,12 +9,8 @@ pub fn get_file_lines(file: &str) -> Vec<String> {
         .collect();
 }
 
-pub fn get_numbers(s: &str) -> Vec<i64> {
-    return s
-        .chars()
-        .filter(|c| c.is_digit(10) || c.is_whitespace())
-        .collect::<String>()
-        .split_whitespace()
-        .map(|s| s.parse::<i64>().expect("not a number"))
-        .collect();
+pub fn extract<'a>(s: &'a str, regex: &'a str) -> Vec<&'a str> {
+    let regex = Regex::new(regex).unwrap();
+
+    return regex.find_iter(s).map(|m| m.as_str()).collect();
 }
