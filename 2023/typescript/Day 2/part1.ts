@@ -1,28 +1,30 @@
 import { extractOne, getFileLines } from '../utils';
 
-const lines = await getFileLines('./input.txt');
+const lines = await getFileLines(2);
 const maxRed = 12;
 const maxGreen = 13;
 const maxBlue = 14;
 
-let idSum = 0;
+export async function solve() {
+	let idSum = 0;
 
-for (const line of lines) {
-	const id = Number.parseInt(extractOne(line, 'Game (\\d+)', 1));
-	const sets = line.split(';');
+	for (const line of lines) {
+		const id = Number.parseInt(extractOne(line, 'Game (\\d+)', 1));
+		const sets = line.split(';');
 
-	const blueCubes: number[] = [];
-	const redCubes: number[] = [];
-	const greenCubes: number[] = [];
+		const blueCubes: number[] = [];
+		const redCubes: number[] = [];
+		const greenCubes: number[] = [];
 
-	addCubes(sets, blueCubes, redCubes, greenCubes);
+		addCubes(sets, blueCubes, redCubes, greenCubes);
 
-	if (isPossibleGame(blueCubes, redCubes, greenCubes)) {
-		idSum += id;
+		if (isPossibleGame(blueCubes, redCubes, greenCubes)) {
+			idSum += id;
+		}
 	}
-}
 
-console.log(idSum);
+	return idSum;
+}
 
 function addCubes(sets: string[], blueCubes: number[], redCubes: number[], greenCubes: number[]) {
 	const blueCubesRegexString = '((?<blueCubes>\\d+) blue)';

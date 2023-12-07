@@ -1,21 +1,22 @@
 import { extractMultiple, getFileInput } from '../utils';
 import { Card, CardOrder, HandType, HandTypeOrder } from './part2-models';
 
-const input = await getFileInput('./input.txt');
-const regex = /(?<hand>[2-9TJQKA]{5}) (?<bid>\d+)/g;
+const input = await getFileInput(7);
 
-const handsAndBids = extractMultiple(input, regex, ['hand', 'bid'] as const)
-	.map((hb) => ({ ...hb, bid: Number.parseInt(hb.bid ?? 0) }))
-	.filter((h): h is { hand: string; bid: number } => !!h.hand);
+export async function solve() {
+	const regex = /(?<hand>[2-9TJQKA]{5}) (?<bid>\d+)/g;
 
-handsAndBids.sort((h1, h2) => sortHandsAsc(h1.hand, h2.hand));
+	const handsAndBids = extractMultiple(input, regex, ['hand', 'bid'] as const)
+		.map((hb) => ({ ...hb, bid: Number.parseInt(hb.bid ?? 0) }))
+		.filter((h): h is { hand: string; bid: number } => !!h.hand);
 
-const totalWinnings = handsAndBids.reduce((acc, curr, i) => {
-	acc += curr.bid * (i + 1);
-	return acc;
-}, 0);
+	handsAndBids.sort((h1, h2) => sortHandsAsc(h1.hand, h2.hand));
 
-console.log(totalWinnings);
+	return handsAndBids.reduce((acc, curr, i) => {
+		acc += curr.bid * (i + 1);
+		return acc;
+	}, 0);
+}
 
 function sortHandsAsc(hand1: string, hand2: string): number {
 	const hand1Type = determineHandType(hand1);

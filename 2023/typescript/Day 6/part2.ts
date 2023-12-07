@@ -1,22 +1,21 @@
 import { getFileLines } from '../utils';
 
-const lines = await getFileLines('./input.txt');
-const time = [...lines[0].replaceAll(' ', '').matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]));
-const distance = [...lines[1].replaceAll(' ', '').matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]));
+const lines = await getFileLines(6);
 
-const wins = getNumberOfWins();
+export async function solve() {
+	const time = [...lines[0].replaceAll(' ', '').matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]))[0];
+	const distance = [...lines[1].replaceAll(' ', '').matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]))[0];
 
-console.log(wins);
+	return getNumberOfWins(time, distance);
+}
 
-function getNumberOfWins(): number {
-	const maxTime = time[0];
-	const distanceToBeat = distance[0];
-	const minChargeTime = Math.ceil(distanceToBeat / maxTime);
+function getNumberOfWins(time: number, distance: number): number {
+	const minChargeTime = Math.ceil(distance / time);
 	let waysToWin = 0;
 
-	for (let i = minChargeTime; i < maxTime; i++) {
-		const timeLeft = maxTime - i;
-		if (i * timeLeft > distanceToBeat) {
+	for (let i = minChargeTime; i < time; i++) {
+		const timeLeft = time - i;
+		if (i * timeLeft > distance) {
 			waysToWin++;
 		}
 	}

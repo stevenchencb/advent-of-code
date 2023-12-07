@@ -1,22 +1,24 @@
 import { extractOne, getFileLines } from '../utils';
 
-const lines = await getFileLines('./input.txt');
+const lines = await getFileLines(2);
 
-let powerSum = 0;
+export async function solve() {
+	let powerSum = 0;
 
-for (const line of lines) {
-	const sets = line.split(';');
+	for (const line of lines) {
+		const sets = line.split(';');
 
-	const blueCubes: number[] = [];
-	const redCubes: number[] = [];
-	const greenCubes: number[] = [];
+		const blueCubes: number[] = [];
+		const redCubes: number[] = [];
+		const greenCubes: number[] = [];
 
-	addCubes(sets, blueCubes, redCubes, greenCubes);
+		addCubes(sets, blueCubes, redCubes, greenCubes);
 
-	powerSum += getPower(blueCubes, redCubes, greenCubes);
+		powerSum += getPower(blueCubes, redCubes, greenCubes);
+	}
+
+	return powerSum;
 }
-
-console.log(powerSum);
 
 function addCubes(sets: string[], blueCubes: number[], redCubes: number[], greenCubes: number[]) {
 	const blueCubesRegexString = '((?<blueCubes>\\d+) blue)';

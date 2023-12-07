@@ -1,26 +1,29 @@
 import { extractOne, getFileInput } from '../utils';
 
-const input = await getFileInput('./input.txt');
-const seedsAndMapsStrings = input.split('\n\n');
+const input = await getFileInput(5);
 
-const seedToSoilMap = getMap(seedsAndMapsStrings, 'seed-to-soil');
-const soilToFertMap = getMap(seedsAndMapsStrings, 'soil-to-fertilizer');
-const fertToWaterMap = getMap(seedsAndMapsStrings, 'fertilizer-to-water');
-const waterToLightMap = getMap(seedsAndMapsStrings, 'water-to-light');
-const lightToTempMap = getMap(seedsAndMapsStrings, 'light-to-temperature');
-const tempToHumidMap = getMap(seedsAndMapsStrings, 'temperature-to-humidity');
-const humidToLocationMap = getMap(seedsAndMapsStrings, 'humidity-to-location');
+export async function solve() {
+	const seedsAndMapsStrings = input.split('\n\n');
 
-const seeds = [...seedsAndMapsStrings[0].matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]));
+	const seedToSoilMap = getMap(seedsAndMapsStrings, 'seed-to-soil');
+	const soilToFertMap = getMap(seedsAndMapsStrings, 'soil-to-fertilizer');
+	const fertToWaterMap = getMap(seedsAndMapsStrings, 'fertilizer-to-water');
+	const waterToLightMap = getMap(seedsAndMapsStrings, 'water-to-light');
+	const lightToTempMap = getMap(seedsAndMapsStrings, 'light-to-temperature');
+	const tempToHumidMap = getMap(seedsAndMapsStrings, 'temperature-to-humidity');
+	const humidToLocationMap = getMap(seedsAndMapsStrings, 'humidity-to-location');
 
-const locations = seeds.map((n) =>
-	map(
-		map(map(map(map(map(map(n, seedToSoilMap), soilToFertMap), fertToWaterMap), waterToLightMap), lightToTempMap), tempToHumidMap),
-		humidToLocationMap
-	)
-);
+	const seeds = [...seedsAndMapsStrings[0].matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]));
 
-console.log(locations.sort((a, b) => a - b));
+	const locations = seeds.map((n) =>
+		map(
+			map(map(map(map(map(map(n, seedToSoilMap), soilToFertMap), fertToWaterMap), waterToLightMap), lightToTempMap), tempToHumidMap),
+			humidToLocationMap
+		)
+	);
+
+	return locations.sort((a, b) => a - b)[0];
+}
 
 function getMap(seedsAndMapsStrings: string[], mapName: string) {
 	const mapLines =

@@ -1,47 +1,49 @@
-import { getFileLines } from '../utils';
+import { getFileLines, isEqualCoordinate } from '../utils';
 
 type NumbersAndGearCoords = { numbers: number[]; potentialGearCoordinates: [number, number][][] };
 
-const lines = await getFileLines('./input.txt');
+const lines = await getFileLines(3);
 
-// numbers and their potential symbol coordinates (in 2D matrix) per line
-const numberAndPotentialGearCoords: NumbersAndGearCoords[] = calculateNumbersAndGearCoords(lines);
+export async function solve() {
+	// numbers and their potential symbol coordinates (in 2D matrix) per line
+	const numberAndPotentialGearCoords: NumbersAndGearCoords[] = calculateNumbersAndGearCoords(lines);
 
-let gearRatioSum = 0;
+	let gearRatioSum = 0;
 
-for (let i = 0; i < lines.length; i++) {
-	const currentLine = lines[i];
+	for (let i = 0; i < lines.length; i++) {
+		const currentLine = lines[i];
 
-	// get coordinates of gears in line
-	const gearCoordinates: [number, number][] = [...currentLine.matchAll(/\*/g)].map((m) => [m.index ?? -1, i]);
+		// get coordinates of gears in line
+		const gearCoordinates: [number, number][] = [...currentLine.matchAll(/\*/g)].map((m) => [m.index ?? -1, i]);
 
-	const prevLine = i - 1 < 0 ? 0 : i - 1;
-	const nextLine = i + 1 > numberAndPotentialGearCoords.length - 1 ? numberAndPotentialGearCoords.length - 1 : i + 1;
+		const prevLine = i - 1 < 0 ? 0 : i - 1;
+		const nextLine = i + 1 > numberAndPotentialGearCoords.length - 1 ? numberAndPotentialGearCoords.length - 1 : i + 1;
 
-	gearCoordinates.forEach((coordinate) => {
-		let adjacentTo: number[] = [];
+		gearCoordinates.forEach((coordinate) => {
+			let adjacentTo: number[] = [];
 
-		// check if gear coordinate occurs in lists of potential gear coordinates
-		// enough to only check the potential symbol coordinates of current line and the lines above and below
-		for (let j = prevLine; j <= nextLine; j++) {
-			const numbersOfLine = numberAndPotentialGearCoords[j].numbers;
-			const potentialGearCoordsOfLine = numberAndPotentialGearCoords[j].potentialGearCoordinates;
-			numbersOfLine.forEach((n, k) => {
-				const potentialCoordsOfNumber = potentialGearCoordsOfLine[k];
-				if (potentialCoordsOfNumber.find((pc) => isEqualTuple(pc, coordinate))) {
-					adjacentTo.push(n);
-				}
-			});
-		}
+			// check if gear coordinate occurs in lists of potential gear coordinates
+			// enough to only check the potential symbol coordinates of current line and the lines above and below
+			for (let j = prevLine; j <= nextLine; j++) {
+				const numbersOfLine = numberAndPotentialGearCoords[j].numbers;
+				const potentialGearCoordsOfLine = numberAndPotentialGearCoords[j].potentialGearCoordinates;
+				numbersOfLine.forEach((n, k) => {
+					const potentialCoordsOfNumber = potentialGearCoordsOfLine[k];
+					if (potentialCoordsOfNumber.find((pc) => isEqualCoordinate(pc, coordinate))) {
+						adjacentTo.push(n);
+					}
+				});
+			}
 
-		if (adjacentTo.length === 2) {
-			const gearRatio = adjacentTo[0] * adjacentTo[1];
-			gearRatioSum += gearRatio;
-		}
-	});
+			if (adjacentTo.length === 2) {
+				const gearRatio = adjacentTo[0] * adjacentTo[1];
+				gearRatioSum += gearRatio;
+			}
+		});
+	}
+
+	return gearRatioSum;
 }
-
-console.log(gearRatioSum);
 
 function calculateNumbersAndGearCoords(lines: string[]): NumbersAndGearCoords[] {
 	const result: NumbersAndGearCoords[] = [];
@@ -80,8 +82,4 @@ function getPotentialGearCoordinates(minX: number, maxX: number, line: number): 
 	potentialCoordinates.push([maxX + 1, line]);
 
 	return potentialCoordinates;
-}
-
-function isEqualTuple(a: [number, number], b: [number, number]) {
-	return a[0] === b[0] && a[1] === b[1];
 }

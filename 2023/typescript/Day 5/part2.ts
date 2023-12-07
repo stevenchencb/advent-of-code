@@ -1,40 +1,45 @@
 import { extractOne, getFileInput } from '../utils';
 
-const input = await getFileInput('./input.txt');
-const seedsAndMapsStrings = input.split('\n\n');
+const input = await getFileInput(5);
 
-const seedToSoilMap = getMap(seedsAndMapsStrings, 'seed-to-soil');
-const soilToFertMap = getMap(seedsAndMapsStrings, 'soil-to-fertilizer');
-const fertToWaterMap = getMap(seedsAndMapsStrings, 'fertilizer-to-water');
-const waterToLightMap = getMap(seedsAndMapsStrings, 'water-to-light');
-const lightToTempMap = getMap(seedsAndMapsStrings, 'light-to-temperature');
-const tempToHumidMap = getMap(seedsAndMapsStrings, 'temperature-to-humidity');
-const humidToLocationMap = getMap(seedsAndMapsStrings, 'humidity-to-location');
+export async function solve() {
+	const seedsAndMapsStrings = input.split('\n\n');
 
-const seeds = [...seedsAndMapsStrings[0].matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]));
+	const seedToSoilMap = getMap(seedsAndMapsStrings, 'seed-to-soil');
+	const soilToFertMap = getMap(seedsAndMapsStrings, 'soil-to-fertilizer');
+	const fertToWaterMap = getMap(seedsAndMapsStrings, 'fertilizer-to-water');
+	const waterToLightMap = getMap(seedsAndMapsStrings, 'water-to-light');
+	const lightToTempMap = getMap(seedsAndMapsStrings, 'light-to-temperature');
+	const tempToHumidMap = getMap(seedsAndMapsStrings, 'temperature-to-humidity');
+	const humidToLocationMap = getMap(seedsAndMapsStrings, 'humidity-to-location');
 
-const seedRanges = seeds.reduce<number[][]>((acc, curr, i) => {
-	if (i % 2 === 0) {
-		acc[Math.floor(i / 2)] = [curr];
-	} else {
-		acc[Math.floor(i / 2)][1] = curr;
-	}
-	return acc;
-}, []);
+	const seeds = [...seedsAndMapsStrings[0].matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]));
 
-console.log(findSmallestLocationNumber());
+	const seedRanges = seeds.reduce<number[][]>((acc, curr, i) => {
+		if (i % 2 === 0) {
+			acc[Math.floor(i / 2)] = [curr];
+		} else {
+			acc[Math.floor(i / 2)][1] = curr;
+		}
+		return acc;
+	}, []);
 
-function findSmallestLocationNumber(): number {
+	return findSmallestLocationNumber(seedRanges, [
+		humidToLocationMap,
+		tempToHumidMap,
+		lightToTempMap,
+		waterToLightMap,
+		fertToWaterMap,
+		soilToFertMap,
+		seedToSoilMap,
+	]);
+}
+
+function findSmallestLocationNumber(seedRanges: number[][], maps: number[][][]): number {
 	for (let i = 0; i < Number.MAX_SAFE_INTEGER; i++) {
 		const seed = reverseMap(
-			reverseMap(
-				reverseMap(
-					reverseMap(reverseMap(reverseMap(reverseMap(i, humidToLocationMap), tempToHumidMap), lightToTempMap), waterToLightMap),
-					fertToWaterMap
-				),
-				soilToFertMap
-			),
-			seedToSoilMap
+			reverseMap(reverseMap(reverseMap(reverseMap(reverseMap(reverseMap(i, maps[0]), maps[1]), maps[2]), maps[3]), maps[4]), maps[5]),
+			maps[6]
 		);
 
 		for (const range of seedRanges) {

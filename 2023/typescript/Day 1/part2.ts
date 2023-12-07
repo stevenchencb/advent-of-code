@@ -1,6 +1,6 @@
 import { getFileLines } from '../utils';
 
-const inputLines = await getFileLines('./input.txt');
+const inputLines = await getFileLines(1);
 const numbersRegex = /one|two|three|four|five|six|seven|eight|nine|[0-9]/gi;
 const numberMap: Record<string, number> = {
 	one: 1,
@@ -14,23 +14,23 @@ const numberMap: Record<string, number> = {
 	nine: 9,
 };
 
-const calibrationSum = inputLines.reduce((acc, curr) => {
-	const numbersOfLine: string[] = [];
-	let matches = numbersRegex.exec(curr);
-	while (matches) {
-		// matching "consumes" characters it matched
-		// manually set lastIndex (where to start the next match) back in case of overlapping matches
-		numbersRegex.lastIndex -= matches[0].length - 1;
-		numbersOfLine.push(matches[0]);
-		matches = numbersRegex.exec(curr);
-	}
-	const firstNumber = mapToNumber(numbersOfLine[0]);
-	const lastNumber = mapToNumber(numbersOfLine[numbersOfLine.length - 1]);
-	const calibration = Number.parseInt(`${firstNumber}${lastNumber}`);
-	return acc + calibration;
-}, 0);
-
-console.log(calibrationSum);
+export async function solve() {
+	return inputLines.reduce((acc, curr) => {
+		const numbersOfLine: string[] = [];
+		let matches = numbersRegex.exec(curr);
+		while (matches) {
+			// matching "consumes" characters it matched
+			// manually set lastIndex (where to start the next match) back in case of overlapping matches
+			numbersRegex.lastIndex -= matches[0].length - 1;
+			numbersOfLine.push(matches[0]);
+			matches = numbersRegex.exec(curr);
+		}
+		const firstNumber = mapToNumber(numbersOfLine[0]);
+		const lastNumber = mapToNumber(numbersOfLine[numbersOfLine.length - 1]);
+		const calibration = Number.parseInt(`${firstNumber}${lastNumber}`);
+		return acc + calibration;
+	}, 0);
+}
 
 function mapToNumber(s: string | undefined) {
 	if (!s) return undefined;
