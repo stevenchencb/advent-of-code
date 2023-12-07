@@ -1,4 +1,4 @@
-import { extractWithRegex, getFileLines } from '../utils';
+import { extractOne, getFileLines } from '../utils';
 
 const lines = await getFileLines('./input.txt');
 const maxRed = 12;
@@ -8,7 +8,7 @@ const maxBlue = 14;
 let idSum = 0;
 
 for (const line of lines) {
-	const id = Number.parseInt(extractWithRegex(line, 'Game (\\d+)', 1));
+	const id = Number.parseInt(extractOne(line, 'Game (\\d+)', 1));
 	const sets = line.split(';');
 
 	const blueCubes: number[] = [];
@@ -30,9 +30,9 @@ function addCubes(sets: string[], blueCubes: number[], redCubes: number[], green
 	const greenCubesRegexString = '((?<greenCubes>\\d+) green)';
 
 	for (const set of sets) {
-		const extractedBlueCubes = extractWithRegex(set, blueCubesRegexString, 'blueCubes');
-		const extractedRedCubes = extractWithRegex(set, redCubesRegexString, 'redCubes');
-		const extractedGreenCubes = extractWithRegex(set, greenCubesRegexString, 'greenCubes');
+		const extractedBlueCubes = extractOne(set, blueCubesRegexString, 'blueCubes');
+		const extractedRedCubes = extractOne(set, redCubesRegexString, 'redCubes');
+		const extractedGreenCubes = extractOne(set, greenCubesRegexString, 'greenCubes');
 
 		const blueCubesInSet = Number.parseInt(extractedBlueCubes);
 		const redCubesInSet = Number.parseInt(extractedRedCubes);

@@ -1,4 +1,4 @@
-import { extractWithRegex, getFileInput } from '../utils';
+import { extractOne, getFileInput } from '../utils';
 
 const input = await getFileInput('./input.txt');
 const seedsAndMapsStrings = input.split('\n\n');
@@ -32,9 +32,9 @@ function getMap(seedsAndMapsStrings: string[], mapName: string) {
 
 	for (const line of mapLines) {
 		const regex = /(?<destStart>\d+) (?<srcStart>\d+) (?<range>\d+)/;
-		const destStart = Number.parseInt(extractWithRegex(line, regex, 'destStart'));
-		const srcStart = Number.parseInt(extractWithRegex(line, regex, 'srcStart'));
-		const range = Number.parseInt(extractWithRegex(line, regex, 'range'));
+		const destStart = Number.parseInt(extractOne(line, regex, 'destStart'));
+		const srcStart = Number.parseInt(extractOne(line, regex, 'srcStart'));
+		const range = Number.parseInt(extractOne(line, regex, 'range'));
 
 		resultMap.push([srcStart, destStart, range]);
 	}
