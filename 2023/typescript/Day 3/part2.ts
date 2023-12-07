@@ -1,4 +1,4 @@
-import { getFileLines } from '../../utils';
+import { getFileLines } from '../utils';
 
 type NumbersAndGearCoords = { numbers: number[]; potentialGearCoordinates: [number, number][][] };
 

@@ -1,4 +1,4 @@
-import { getFileLines, intersection } from '../../utils';
+import { getFileLines, intersection } from '../utils';
 
 const lines = await getFileLines('./input.txt');
 

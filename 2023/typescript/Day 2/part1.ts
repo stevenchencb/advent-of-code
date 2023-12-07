@@ -1,10 +1,14 @@
-import { extractWithRegex, getFileLines } from '../../utils';
+import { extractWithRegex, getFileLines } from '../utils';
 
 const lines = await getFileLines('./input.txt');
+const maxRed = 12;
+const maxGreen = 13;
+const maxBlue = 14;
 
-let powerSum = 0;
+let idSum = 0;
 
 for (const line of lines) {
+	const id = Number.parseInt(extractWithRegex(line, 'Game (\\d+)', 1));
 	const sets = line.split(';');
 
 	const blueCubes: number[] = [];
@@ -13,10 +17,12 @@ for (const line of lines) {
 
 	addCubes(sets, blueCubes, redCubes, greenCubes);
 
-	powerSum += getPower(blueCubes, redCubes, greenCubes);
+	if (isPossibleGame(blueCubes, redCubes, greenCubes)) {
+		idSum += id;
+	}
 }
 
-console.log(powerSum);
+console.log(idSum);
 
 function addCubes(sets: string[], blueCubes: number[], redCubes: number[], greenCubes: number[]) {
 	const blueCubesRegexString = '((?<blueCubes>\\d+) blue)';
@@ -39,6 +45,6 @@ function addCubes(sets: string[], blueCubes: number[], redCubes: number[], green
 	}
 }
 
-function getPower(blueCubes: number[], redCubes: number[], greenCubes: number[]) {
-	return Math.max(...blueCubes) * Math.max(...redCubes) * Math.max(...greenCubes);
+function isPossibleGame(blueCubes: number[], redCubes: number[], greenCubes: number[]) {
+	return Math.max(...blueCubes) <= maxBlue && Math.max(...redCubes) <= maxRed && Math.max(...greenCubes) <= maxGreen;
 }

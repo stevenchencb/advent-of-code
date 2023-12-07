@@ -1,4 +1,4 @@
-import { getFileLines } from '../../utils';
+import { getFileLines } from '../utils';
 
 const inputLines = await getFileLines('./input.txt');
 const numberRegex = /[0-9]/g;

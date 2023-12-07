@@ -1,4 +1,4 @@
-import { getFileLines } from '../../utils';
+import { getFileLines } from '../utils';
 
 const lines = await getFileLines('./input.txt');
 const times = [...lines[0].matchAll(/\d+/g)].map((m) => Number.parseInt(m[0]));

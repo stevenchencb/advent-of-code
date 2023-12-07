@@ -1,4 +1,4 @@
-import { extractWithRegex, getFileInput } from '../../utils';
+import { extractWithRegex, getFileInput } from '../utils';
 
 const input = await getFileInput('./input.txt');
 const seedsAndMapsStrings = input.split('\n\n');
