@@ -1,6 +1,5 @@
-use std::fs;
-
 use crate::utils::get_file_lines;
+use std::fs;
 
 pub fn part1() {
     let lines = get_file_lines("./src/days/day1/input.txt");

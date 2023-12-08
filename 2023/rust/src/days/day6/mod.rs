@@ -1,7 +1,7 @@
-use crate::utils::{self, extract};
+use crate::utils::{extract, get_file_lines};
 
 pub fn part1() {
-    let lines = utils::get_file_lines("./src/days/day6/input.txt");
+    let lines = get_file_lines("./src/days/day6/input.txt");
 
     let times = extract(&lines[0], r"\d+")
         .iter()
@@ -23,11 +23,11 @@ pub fn part1() {
 }
 
 pub fn part2() {
-    let lines = utils::get_file_lines("./src/days/day6/input.txt");
+    let lines = get_file_lines("./src/days/day6/input.txt");
 
-    let time_string = lines[0].replace(" ", "");
+    let time_string = lines[0].replace(' ', "");
 
-    let distance_string = lines[1].replace(" ", "");
+    let distance_string = lines[1].replace(' ', "");
 
     let time = extract(&time_string, r"\d+")[0].parse().unwrap();
     let distance = extract(&distance_string, r"\d+")[0].parse().unwrap();
@@ -42,5 +42,5 @@ fn mitternacht(time: &i64, distance: &i64) -> f64 {
     let x1: f64 = (-time as f64 + square_root) / -2.0;
     let x2: f64 = (-time as f64 - square_root) / -2.0;
 
-    return f64::ceil(x2 - 1.0) - f64::floor(x1 + 1.0) + 1.0;
+    f64::ceil(x2 - 1.0) - f64::floor(x1 + 1.0) + 1.0
 }
