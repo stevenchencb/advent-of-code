@@ -12,7 +12,7 @@ pub fn part1() {
         extrapolated_sum += get_extrapolated_value_forward(&sequences);
     }
 
-    println!("{extrapolated_sum}");
+    println!("Solution to Day 9 Part 1 : {extrapolated_sum}");
 }
 
 pub fn part2() {
@@ -25,7 +25,7 @@ pub fn part2() {
         extrapolated_sum += get_extrapolated_value_backward(&sequences);
     }
 
-    println!("{extrapolated_sum}");
+    println!("Solution to Day 9 Part 2 : {extrapolated_sum}");
 }
 
 fn map_to_history_numbers(history: &str) -> Vec<i32> {

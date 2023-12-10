@@ -173,3 +173,4 @@ dist
 **/target
 
 .DS_Store
+.vscode
