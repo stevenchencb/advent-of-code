@@ -8,6 +8,7 @@ use std::time::Instant;
 use days::day1;
 use days::day6;
 use days::day8;
+use days::day9;
 
 fn main() {
     run_part1();
@@ -17,7 +18,7 @@ fn main() {
 fn run_part1() {
     let start = Instant::now();
 
-    day8::part1();
+    day9::part1();
 
     let elapsed = start.elapsed();
 
@@ -27,7 +28,7 @@ fn run_part1() {
 fn run_part2() {
     let start = Instant::now();
 
-    day8::part2();
+    day9::part2();
 
     let elapsed = start.elapsed();
 
