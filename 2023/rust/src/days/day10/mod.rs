@@ -1,5 +1,3 @@
-use std::ops::Index;
-
 use crate::utils::get_file_lines;
 
 enum FieldSymbol {
