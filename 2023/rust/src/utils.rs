@@ -1,5 +1,8 @@
 use regex::{Captures, Regex};
-use std::{fs::read_to_string, ops::Index};
+use std::{
+    fs::read_to_string,
+    ops::{Index, Range},
+};
 
 pub fn get_file_lines(file: &str) -> Vec<String> {
     return read_to_string(file)
@@ -69,6 +72,44 @@ impl<T: std::clone::Clone> Matrix<T> {
             self.insert(col_index + i * self.cols + i, e);
         }
         self.cols += 1
+    }
+
+    pub fn get_row(&self, row_index: usize) -> Vec<T> {
+        assert!(row_index < self.rows);
+
+        (self.data[row_index * self.cols..row_index * self.cols + self.cols]).to_vec()
+    }
+
+    pub fn get_rows(&self, row_indices: Range<usize>) -> Vec<Vec<T>> {
+        let mut rows: Vec<Vec<T>> = vec![];
+
+        for i in row_indices {
+            rows.push(self.get_row(i));
+        }
+
+        rows
+    }
+
+    pub fn get_col(&self, col_index: usize) -> Vec<T> {
+        assert!(col_index < self.cols);
+
+        let mut col: Vec<T> = vec![];
+
+        for i in 0..self.rows {
+            col.push(self.data[col_index + i * self.cols].clone())
+        }
+
+        col
+    }
+
+    pub fn get_cols(&self, col_indices: Range<usize>) -> Vec<Vec<T>> {
+        let mut cols: Vec<Vec<T>> = vec![];
+
+        for i in col_indices {
+            cols.push(self.get_col(i));
+        }
+
+        cols
     }
 
     pub fn iter(&self) -> impl Iterator<Item = &T> {
