@@ -29,7 +29,7 @@ pub fn part1() {
     println!("Solution for Day 12 Part 1 : {sum}");
 }
 
-// part 2 solved using dynamic programming and memoization
+// part 2 solved using memoization/caching
 // courtesy of https://github.com/wilkotom/Aoc2023/blob/main/day12/src/main.rs
 pub fn part2() {
     let lines = get_file_lines("./src/days/day12/input.txt");
