@@ -1,6 +1,6 @@
 use std::array;
 
-use crate::utils::{get_file_lines, Matrix};
+use crate::utils::{helpers::get_file_lines, matrix::Matrix};
 
 pub fn part1() {
     let input_vec: Vec<char> = get_file_lines("./src/days/day11/input.txt")
@@ -32,7 +32,7 @@ pub fn part2() {
     println!("Solution to Day 11 Part 2 : {path_length_sum}")
 }
 
-fn get_path_length_sum(matrix: &Matrix<char>, expansion_factor: i64) -> i64 {
+fn get_path_length_sum(matrix: &Matrix, expansion_factor: i64) -> i64 {
     let mut galaxy_coords: Vec<(usize, usize)> = vec![];
     for (i, c) in matrix.iter().enumerate() {
         if *c == '#' {
@@ -52,7 +52,7 @@ fn get_path_length_sum(matrix: &Matrix<char>, expansion_factor: i64) -> i64 {
 }
 
 fn get_distance(
-    matrix: &Matrix<char>,
+    matrix: &Matrix,
     c1: (usize, usize),
     c2: (usize, usize),
     expansion_factor: i64,
@@ -80,7 +80,7 @@ fn get_distance(
         + num_expansions * (expansion_factor - 1)
 }
 
-fn is_empty_row(matrix: &Matrix<char>, row: usize) -> bool {
+fn is_empty_row(matrix: &Matrix, row: usize) -> bool {
     for i in 0..matrix.cols {
         if matrix[(row, i)] == '#' {
             return false;
@@ -89,7 +89,7 @@ fn is_empty_row(matrix: &Matrix<char>, row: usize) -> bool {
     true
 }
 
-fn is_empty_col(matrix: &Matrix<char>, col: usize) -> bool {
+fn is_empty_col(matrix: &Matrix, col: usize) -> bool {
     for i in 0..matrix.rows {
         if matrix[(i, col)] == '#' {
             return false;

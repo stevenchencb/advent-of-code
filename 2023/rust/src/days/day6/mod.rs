@@ -1,4 +1,4 @@
-use crate::utils::{extract, get_file_lines};
+use crate::utils::helpers::{extract, get_file_lines};
 
 pub fn part1() {
     let lines = get_file_lines("./src/days/day6/input.txt");

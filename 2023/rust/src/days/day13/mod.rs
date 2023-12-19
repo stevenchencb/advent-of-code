@@ -1,6 +1,6 @@
 use std::fs::read_to_string;
 
-use crate::utils::Matrix;
+use crate::utils::matrix::Matrix;
 
 pub fn part1() {
     let fields: Vec<Vec<String>> = read_to_string("./src/days/day13/input.txt")
@@ -54,7 +54,7 @@ pub fn part2() {
     println!("Solution for Day 13 Part 2 : {sum}")
 }
 
-fn check_reflection(matrix: &Matrix<char>) -> usize {
+fn check_reflection(matrix: &Matrix) -> usize {
     // check horizontal reflection
     for i in 0..matrix.rows - 1 {
         let v1 = matrix.get_rows(0..i + 1);
@@ -126,7 +126,7 @@ fn check_reflection(matrix: &Matrix<char>) -> usize {
     0
 }
 
-fn check_reflection_with_smudge(matrix: &Matrix<char>) -> i32 {
+fn check_reflection_with_smudge(matrix: &Matrix) -> i32 {
     // check horizontal reflection
     let mut h_index: i32 = -1;
     let mut h_smudge_index: i32 = -1;

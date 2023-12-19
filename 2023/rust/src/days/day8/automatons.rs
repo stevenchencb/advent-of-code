@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::utils::{extract, extract_named};
+use crate::utils::helpers::{extract, extract_named};
 
 // Part 1 modeled using a Deterministic Finite Automaton
 pub struct Dfa {

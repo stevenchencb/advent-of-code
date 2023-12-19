@@ -10,6 +10,8 @@ use days::day10;
 use days::day11;
 use days::day12;
 use days::day13;
+use days::day14;
+use days::day15;
 use days::day6;
 use days::day8;
 use days::day9;
@@ -22,7 +24,7 @@ fn main() {
 fn run_part1() {
     let start = Instant::now();
 
-    day13::part1();
+    day14::part1();
 
     let elapsed = start.elapsed();
 
@@ -32,7 +34,7 @@ fn run_part1() {
 fn run_part2() {
     let start = Instant::now();
 
-    day13::part2();
+    day14::part2();
 
     let elapsed = start.elapsed();
 

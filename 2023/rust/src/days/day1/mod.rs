@@ -1,4 +1,4 @@
-use crate::utils::get_file_lines;
+use crate::utils::helpers::get_file_lines;
 use std::fs;
 
 pub fn part1() {
