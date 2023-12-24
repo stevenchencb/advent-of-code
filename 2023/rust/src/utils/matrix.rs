@@ -1,6 +1,6 @@
 use std::{
     fmt::Display,
-    ops::{Index, Range},
+    ops::{Index, IndexMut, Range},
 };
 
 pub struct Matrix {
@@ -162,7 +162,7 @@ impl Matrix {
             for c in self.data.iter().skip(i * self.cols).take(self.cols) {
                 row_string.push(*c);
             }
-            print!("{:?}", row_string);
+            print!("{}", row_string);
             println!();
         }
     }
@@ -173,6 +173,12 @@ impl Index<(usize, usize)> for Matrix {
 
     fn index(&self, index: (usize, usize)) -> &Self::Output {
         &self.data[index.0 * self.cols + index.1]
+    }
+}
+
+impl IndexMut<(usize, usize)> for Matrix {
+    fn index_mut(&mut self, index: (usize, usize)) -> &mut Self::Output {
+        &mut self.data[index.0 * self.cols + index.1]
     }
 }
 

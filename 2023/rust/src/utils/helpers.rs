@@ -1,12 +1,24 @@
 use regex::{Captures, Regex};
 use std::fs::read_to_string;
 
+use super::matrix::Matrix;
+
 pub fn get_file_lines(file: &str) -> Vec<String> {
-    return read_to_string(file)
+    read_to_string(file)
         .unwrap()
         .lines()
         .map(String::from)
-        .collect();
+        .collect()
+}
+
+pub fn get_input_as_matrix(file: &str) -> Matrix {
+    let field_string = read_to_string(file).unwrap();
+    let field_chars: Vec<Vec<char>> = field_string.lines().map(|s| s.chars().collect()).collect();
+
+    let rows = field_chars.len();
+    let cols = field_chars[0].len();
+
+    Matrix::new(rows, cols, field_chars.into_iter().flatten().collect())
 }
 
 pub fn extract<'a>(s: &'a str, regex: &'a str) -> Vec<&'a str> {

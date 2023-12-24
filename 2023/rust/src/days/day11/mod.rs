@@ -1,16 +1,12 @@
 use std::array;
 
-use crate::utils::{helpers::get_file_lines, matrix::Matrix};
+use crate::utils::{
+    helpers::{get_file_lines, get_input_as_matrix},
+    matrix::Matrix,
+};
 
 pub fn part1() {
-    let input_vec: Vec<char> = get_file_lines("./src/days/day11/input.txt")
-        .into_iter()
-        .flat_map(|l| l.chars().collect::<Vec<char>>())
-        .collect();
-
-    let num_rows_cols = f32::sqrt(input_vec.len() as f32) as usize;
-
-    let matrix = Matrix::new(num_rows_cols, num_rows_cols, input_vec);
+    let matrix = get_input_as_matrix("./src/days/day11/input.txt");
 
     let path_length_sum = get_path_length_sum(&matrix, 2);
 

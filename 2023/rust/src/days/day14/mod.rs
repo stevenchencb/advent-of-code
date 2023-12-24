@@ -3,16 +3,10 @@ use std::{
     fs::read_to_string,
 };
 
-use crate::utils::matrix::Matrix;
+use crate::utils::{helpers::get_input_as_matrix, matrix::Matrix};
 
 pub fn part1() {
-    let field_string = read_to_string("./src/days/day14/input.txt").unwrap();
-    let field_chars: Vec<Vec<char>> = field_string.lines().map(|s| s.chars().collect()).collect();
-
-    let rows = field_chars.len();
-    let cols = field_chars[0].len();
-
-    let mut matrix = Matrix::new(rows, cols, field_chars.into_iter().flatten().collect());
+    let mut matrix = get_input_as_matrix("./src/days/day14/input.txt");
     tilt(&mut matrix);
 
     let sum = calculate_col_load(&matrix);
