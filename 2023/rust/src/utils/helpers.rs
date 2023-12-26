@@ -36,3 +36,18 @@ pub fn extract_named<'a>(s: &'a str, regex: &'a str, group_name: &'a str) -> Str
         None => String::new(),
     }
 }
+
+pub fn shoelace(vertices: &[(i32, i32)]) -> f64 {
+    let mut result: f64 = 0.0;
+    for i in 0..vertices.len() {
+        result += (vertices[i % vertices.len()].0 as f64
+            * vertices[(i + 1) % vertices.len()].1 as f64)
+            - (vertices[(i + 1) % vertices.len()].0 as f64 * vertices[i % vertices.len()].1 as f64)
+    }
+
+    result
+}
+
+pub fn picks_theorem(area: f64, num_of_boundaries: usize) -> usize {
+    (area.abs() - (num_of_boundaries as f64 / 2.0) + 1.0) as usize
+}

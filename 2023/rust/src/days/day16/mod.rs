@@ -3,26 +3,7 @@ use std::{
     fmt::{self, Display},
 };
 
-use crate::utils::{helpers::get_input_as_matrix, matrix::Matrix};
-
-enum Direction {
-    Up,
-    Down,
-    Left,
-    Right,
-}
-
-impl Display for Direction {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let string = match self {
-            Direction::Up => "Up",
-            Direction::Down => "Down",
-            Direction::Left => "Left",
-            Direction::Right => "Right",
-        };
-        write!(f, "{:?}", string)
-    }
-}
+use crate::utils::{direction::Direction, helpers::get_input_as_matrix, matrix::Matrix};
 
 pub fn part1() {
     let mut matrix = get_input_as_matrix("./src/days/day16/input.txt");

@@ -1,4 +1,4 @@
-use crate::utils::helpers::get_file_lines;
+use crate::utils::helpers::{get_file_lines, picks_theorem, shoelace};
 
 enum FieldSymbol {
     NS,
@@ -70,8 +70,8 @@ pub fn part2() {
 
     // view pipes as boundaries of a polygon and use shoelace formula + Pick's theorem to calculate number of inside tiles
     let boundaries = traverse_pipes(&cleaned_matrix).1;
-    let area = shoelace(&boundaries);
-    let inside_tiles = picks_theorem(area, boundaries.len() as i32);
+    let area = shoelace(&boundaries) / 2.0;
+    let inside_tiles = picks_theorem(area, boundaries.len());
 
     println!("Solution to Day 10 Part 2 : {inside_tiles}")
 }
@@ -159,15 +159,15 @@ fn is_possible_pipe(
     }
 }
 
-fn traverse_pipes(matrix: &[Vec<char>]) -> (i32, Vec<Vec<usize>>) {
-    let mut vertices: Vec<Vec<usize>> = vec![];
+fn traverse_pipes(matrix: &[Vec<char>]) -> (i32, Vec<(i32, i32)>) {
+    let mut vertices: Vec<(i32, i32)> = vec![];
 
     let row_length = matrix.first().unwrap().len();
     let flattened_start = matrix.iter().flatten().position(|c| *c == 'S').unwrap();
     let start_row = flattened_start / row_length;
     let start_position = flattened_start % row_length;
 
-    vertices.push(vec![start_row, start_position]);
+    vertices.push((start_row as i32, start_position as i32));
 
     let (mut current_row, mut current_position, mut current_char, mut coming_from) =
         get_initial_step(matrix, start_row, start_position);
@@ -175,7 +175,7 @@ fn traverse_pipes(matrix: &[Vec<char>]) -> (i32, Vec<Vec<usize>>) {
     let mut pipe_length: i32 = 1;
 
     while current_char != 'S' {
-        vertices.push(vec![current_row, current_position]);
+        vertices.push((current_row as i32, current_position as i32));
         (current_row, current_position, coming_from) =
             get_next_coordinates(current_char, current_row, current_position, &coming_from);
         current_char = matrix[current_row][current_position];
@@ -264,20 +264,4 @@ fn get_next_coordinates(
         },
         _ => panic!("Impossible path"),
     }
-}
-
-fn shoelace(vertices: &[Vec<usize>]) -> f32 {
-    let mut result: f32 = 0.0;
-    for i in 0..vertices.len() {
-        result += (vertices[i % vertices.len()][0] as f32
-            * vertices[(i + 1) % vertices.len()][1] as f32)
-            - (vertices[(i + 1) % vertices.len()][0] as f32
-                * vertices[i % vertices.len()][1] as f32)
-    }
-
-    result / 2.0
-}
-
-fn picks_theorem(area: f32, num_of_boundaries: i32) -> f32 {
-    area.abs() - (num_of_boundaries as f32 / 2.0) + 1.0
 }
