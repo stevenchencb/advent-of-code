@@ -38,9 +38,6 @@ fn a_star(
 
     let mut visited: HashSet<(usize, Direction, usize)> = HashSet::new();
 
-    let mut distances: Vec<usize> = vec![usize::MAX; matrix.data.len()];
-    distances[start] = 0;
-
     let mut current: (usize, usize, Direction, usize);
 
     while !pq.is_empty() {
@@ -51,10 +48,6 @@ fn a_star(
 
         for neighbor in get_neighbors(matrix, current, min_moves, max_moves) {
             let priority = neighbor.0 + manhattan(matrix, neighbor.1, end);
-
-            if distances[neighbor.1] > neighbor.0 {
-                distances[neighbor.1] = neighbor.0;
-            }
 
             if !visited.contains(&(neighbor.1, neighbor.2, neighbor.3)) {
                 pq.push(neighbor, Reverse(priority));
