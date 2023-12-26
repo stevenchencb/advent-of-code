@@ -11,6 +11,14 @@ pub fn get_file_lines(file: &str) -> Vec<String> {
         .collect()
 }
 
+pub fn get_file_blocks(file: &str) -> Vec<Vec<String>> {
+    read_to_string(file)
+        .unwrap()
+        .split("\n\n")
+        .map(|b| b.lines().map(String::from).collect::<Vec<String>>())
+        .collect()
+}
+
 pub fn get_input_as_matrix(file: &str) -> Matrix {
     let field_string = read_to_string(file).unwrap();
     let field_chars: Vec<Vec<char>> = field_string.lines().map(|s| s.chars().collect()).collect();
