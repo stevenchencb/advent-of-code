@@ -27,7 +27,7 @@ fn main() {
 fn run_part1() {
     let start = Instant::now();
 
-    day18::part1();
+    day17::part1();
 
     let elapsed = start.elapsed();
 
@@ -37,7 +37,7 @@ fn run_part1() {
 fn run_part2() {
     let start = Instant::now();
 
-    day18::part2();
+    day17::part2();
 
     let elapsed = start.elapsed();
 

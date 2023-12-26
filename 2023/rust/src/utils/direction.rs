@@ -1,4 +1,7 @@
-use std::fmt::{self, Display, Formatter, Result};
+use std::{
+    fmt::{self, Display, Formatter, Result},
+    hash::Hash,
+};
 
 #[derive(Copy, Clone)]
 pub enum Direction {
@@ -17,5 +20,19 @@ impl Display for Direction {
             Direction::Right => "Right",
         };
         write!(f, "{:?}", string)
+    }
+}
+
+impl PartialEq for Direction {
+    fn eq(&self, other: &Self) -> bool {
+        core::mem::discriminant(self) == core::mem::discriminant(other)
+    }
+}
+
+impl Eq for Direction {}
+
+impl Hash for Direction {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        core::mem::discriminant(self).hash(state);
     }
 }
