@@ -1,6 +1,6 @@
 async function main() {
-	await runPart1(7);
-	await runPart2(7);
+	await runPart1(20);
+	await runPart2(20);
 }
 
 async function runPart1(day: number) {
